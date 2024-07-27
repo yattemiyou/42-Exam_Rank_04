@@ -1,0 +1,21 @@
+{
+	"configurations": [
+		{
+			"name": "gcc - アクティブ ファイルのビルドとデバッグ",
+			"type": "cppdbg",
+			"request": "launch",
+			"program": "${workspaceFolder}/microshell",
+			"args": [
+				"/usr/bin/cat",
+				"'|'",
+				"/usr/bin/cat",
+				"'|'",
+				"/usr/bin/ls"
+			],
+			"cwd": "${workspaceFolder}",
+			"environment": [],
+			"preLaunchTask": "C/C++: gcc アクティブなファイルのビルド",
+			"miDebuggerPath": "/usr/bin/gdb"
+		}
+	]
+}

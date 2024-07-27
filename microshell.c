@@ -6,10 +6,11 @@
 /*   By: anonymous <anonymous@student.42tokyo.jp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 06:58:54 by anonymous         #+#    #+#             */
-/*   Updated: 2024/07/28 07:05:05 by anonymous        ###   ########.fr       */
+/*   Updated: 2024/07/28 07:35:25 by anonymous        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <string.h>
 #include <unistd.h>
 
 int err(char *ptr, int newline)
@@ -21,7 +22,38 @@ int err(char *ptr, int newline)
 	return 1;
 }
 
+int exec(char **argv, int argc, char **envp)
+{
+	(void)envp;
+
+	int status = 0;
+
+	err("---------------", 1);
+	for (int i = 0; i <= argc; i++)
+		if (argv[i])
+			err(argv[i], 1);
+	err("---------------", 1);
+
+	return status;
+}
+
 int main(int argc, char **argv, char **envp)
 {
-	return err("42", 1);
+	int status = 0;
+
+	if (--argc == 0 || ++argv == NULL)
+		return status;
+
+	int offset = 0;
+	for (int i = 0; i <= argc; i++)
+	{
+		if (i == argc || !strcmp(argv[i], "|") || !strcmp(argv[i], ";"))
+		{
+			if (i - offset)
+				status = exec(&argv[offset], i - offset, envp);
+			offset = i + 1;
+		}
+	}
+
+	return status;
 }

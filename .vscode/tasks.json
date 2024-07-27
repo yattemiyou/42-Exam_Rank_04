@@ -1,0 +1,26 @@
+{
+	"tasks": [
+		{
+			"type": "cppbuild",
+			"label": "C/C++: gcc アクティブなファイルのビルド",
+			"command": "gcc",
+			"args": [
+				"-g",
+				"-Wall",
+				"-Wextra",
+				"-Werror",
+				"microshell.c",
+				"-o",
+				"microshell"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		}
+	],
+	"version": "2.0.0"
+}
