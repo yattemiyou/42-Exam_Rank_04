@@ -6,12 +6,15 @@
 /*   By: anonymous <anonymous@student.42tokyo.jp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 06:58:54 by anonymous         #+#    #+#             */
-/*   Updated: 2024/07/28 07:46:31 by anonymous        ###   ########.fr       */
+/*   Updated: 2024/07/28 08:55:13 by anonymous        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+
+#define DEBUG 1
 
 int err(char *ptr, int newline)
 {
@@ -33,17 +36,30 @@ int cd(char **argv, int argc)
 	return 0;
 }
 
+static int prev[2];
+static int fd[] = {-1, -1};
+
 int exec(char **argv, int argc, char **envp)
 {
 	(void)envp;
-
-	int status = 0;
-
+#if DEBUG
 	err("---------------", 1);
 	for (int i = 0; i <= argc; i++)
 		if (argv[i])
 			err(argv[i], 1);
 	err("---------------", 1);
+#endif
+
+	prev[0] = fd[0], prev[1] = fd[1];
+	fd[0] = -1, fd[1] = -1;
+
+	int pipeline = argv[argc] && !strcmp(argv[argc], "|");
+	argv[argc] = NULL;
+
+	if (!pipeline && !strcmp(argv[0], "cd"))
+		return cd(argv, argc);
+
+	int status = 0;
 
 	return status;
 }
