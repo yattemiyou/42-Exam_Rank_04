@@ -6,7 +6,7 @@
 /*   By: anonymous <anonymous@student.42tokyo.jp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 06:58:54 by anonymous         #+#    #+#             */
-/*   Updated: 2024/07/28 10:39:05 by anonymous        ###   ########.fr       */
+/*   Updated: 2024/07/28 10:46:22 by anonymous        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-#define DEBUG 1
+#define DEBUG 0
 
 int err(char *ptr, int newline)
 {
