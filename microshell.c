@@ -6,12 +6,13 @@
 /*   By: anonymous <anonymous@student.42tokyo.jp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 06:58:54 by anonymous         #+#    #+#             */
-/*   Updated: 2024/07/28 08:55:13 by anonymous        ###   ########.fr       */
+/*   Updated: 2024/07/28 09:27:53 by anonymous        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <string.h>
+#include <sys/wait.h>
 #include <unistd.h>
 
 #define DEBUG 1
@@ -41,7 +42,6 @@ static int fd[] = {-1, -1};
 
 int exec(char **argv, int argc, char **envp)
 {
-	(void)envp;
 #if DEBUG
 	err("---------------", 1);
 	for (int i = 0; i <= argc; i++)
@@ -59,9 +59,23 @@ int exec(char **argv, int argc, char **envp)
 	if (!pipeline && !strcmp(argv[0], "cd"))
 		return cd(argv, argc);
 
-	int status = 0;
+	int pid = fork();
+	if (pid == -1)
+		err("error: fatal", 1), exit(1);
+	if (pid == 0)
+	{
+		execve(argv[0], argv, envp);
+		return err("error: cannot execute ", 0), err(argv[0], 1);
+	}
 
-	return status;
+	if (pipeline)
+		return 0;
+
+	int status = 0;
+	waitpid(pid, &status, 0);
+	while (wait(NULL) > 0)
+		;
+	return WEXITSTATUS(status);
 }
 
 int main(int argc, char **argv, char **envp)
