@@ -32,6 +32,10 @@ echo "/*** 課題（execve 存在しないコマンド） ***/"
 ./microshell none ";"
 echo $?
 
+echo "/*** 課題（パイプ 終了コード） ***/"
+./microshell ./exit.sh 10 "|" ./exit.sh 20 "|" ./exit.sh 30 "|" ./exit.sh 40
+echo $?
+
 echo "/*** 課題（引数あり） ***/"
 ./microshell /bin/ls "|" /usr/bin/grep microshell ";" /bin/echo i love my microshell
 echo $?
