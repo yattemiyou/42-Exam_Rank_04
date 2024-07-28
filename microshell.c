@@ -6,7 +6,7 @@
 /*   By: anonymous <anonymous@student.42tokyo.jp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 06:58:54 by anonymous         #+#    #+#             */
-/*   Updated: 2024/07/28 09:27:53 by anonymous        ###   ########.fr       */
+/*   Updated: 2024/07/28 10:06:36 by anonymous        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,14 +59,26 @@ int exec(char **argv, int argc, char **envp)
 	if (!pipeline && !strcmp(argv[0], "cd"))
 		return cd(argv, argc);
 
+	if (pipeline && pipe(fd) == -1)
+		err("error: fatal", 1), exit(1);
+
 	int pid = fork();
 	if (pid == -1)
 		err("error: fatal", 1), exit(1);
 	if (pid == 0)
 	{
+		if (pipeline && (dup2(fd[1], 1) == -1 || close(fd[0]) == -1 || close(fd[1]) == -1))
+			err("error: fatal", 1), exit(1);
+
+		if (prev[0] != -1 && (dup2(prev[0], 0) == -1 || close(prev[0]) == -1 || close(prev[1]) == -1))
+			err("error: fatal", 1), exit(1);
+
 		execve(argv[0], argv, envp);
 		return err("error: cannot execute ", 0), err(argv[0], 1);
 	}
+
+	if (prev[0] != -1 && (close(prev[0]) == -1 || close(prev[1]) == -1))
+		err("error: fatal", 1), exit(1);
 
 	if (pipeline)
 		return 0;
