@@ -4,6 +4,26 @@ echo "/*** 課題（引数なし） ***/"
 ./microshell
 echo $?
 
+echo "/*** 課題（cd 引数なし） ***/"
+./microshell cd
+echo $?
+
+echo "/*** 課題（cd 引数複数） ***/"
+./microshell cd . .
+echo $?
+
+echo "/*** 課題（cd 存在しないディレクトリ） ***/"
+./microshell cd none
+echo $?
+
+echo "/*** 課題（cd ファイルを指定） ***/"
+./microshell cd microshell
+echo $?
+
+echo "/*** 課題（cd 成功） ***/"
+./microshell cd .. ";" /bin/pwd
+echo $?
+
 echo "/*** 課題（引数あり） ***/"
 ./microshell /bin/ls "|" /usr/bin/grep microshell ";" /bin/echo i love my microshell
 echo $?
