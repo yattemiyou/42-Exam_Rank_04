@@ -6,7 +6,7 @@
 /*   By: anonymous <anonymous@student.42tokyo.jp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 06:58:54 by anonymous         #+#    #+#             */
-/*   Updated: 2024/07/28 10:06:36 by anonymous        ###   ########.fr       */
+/*   Updated: 2024/07/28 10:39:05 by anonymous        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,11 @@ int exec(char **argv, int argc, char **envp)
 		if (prev[0] != -1 && (dup2(prev[0], 0) == -1 || close(prev[0]) == -1 || close(prev[1]) == -1))
 			err("error: fatal", 1), exit(1);
 
+		if (pipeline && !strcmp(argv[0], "cd"))
+			exit(cd(argv, argc));
+
 		execve(argv[0], argv, envp);
-		return err("error: cannot execute ", 0), err(argv[0], 1);
+		err("error: cannot execute ", 0), err(argv[0], 1), exit(1);
 	}
 
 	if (prev[0] != -1 && (close(prev[0]) == -1 || close(prev[1]) == -1))
