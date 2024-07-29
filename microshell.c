@@ -6,7 +6,7 @@
 /*   By: anonymous <anonymous@student.42tokyo.jp    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 06:58:54 by anonymous         #+#    #+#             */
-/*   Updated: 2024/07/28 10:46:22 by anonymous        ###   ########.fr       */
+/*   Updated: 2024/07/29 22:34:59 by anonymous        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ int exec(char **argv, int argc, char **envp)
 	err("---------------", 1);
 #endif
 
-	prev[0] = fd[0], prev[1] = fd[1];
-	fd[0] = -1, fd[1] = -1;
+	prev[0] = fd[0], fd[0] = -1;
+	prev[1] = fd[1], fd[1] = -1;
 
 	int pipeline = argv[argc] && !strcmp(argv[argc], "|");
 	argv[argc] = NULL;
